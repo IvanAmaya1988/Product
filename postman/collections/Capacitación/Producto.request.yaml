@@ -1,0 +1,6 @@
+$kind: http-request
+name: Producto
+description: ""
+url: http://localhost:8080/product/getProductName
+method: GET
+order: 1593853606551045

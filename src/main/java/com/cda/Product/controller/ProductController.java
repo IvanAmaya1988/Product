@@ -1,23 +1,42 @@
 package com.cda.Product.controller;
 
+import com.cda.Product.dto.ProductRequestDto;
+import com.cda.Product.dto.ProductResponseDto;
+import com.cda.Product.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("product")
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/products")
 public class ProductController {
 
-    @GetMapping("prueba")
-    public String prueba(){
-        return "ok";
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
-    @GetMapping("getProductName")
-    public ResponseEntity<String> getProductName(){
-        System.out.println("Consumo API");
-        return new ResponseEntity<String>("Producto 1", HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<ProductResponseDto> create(@RequestBody ProductRequestDto dto) {
+            ProductResponseDto response = productService.create(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDto>> getAll() {
+            List<ProductResponseDto> list = productService.getAll();
+        return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> getById(@PathVariable Long id) {
+        ProductResponseDto resultado = productService.getById(id);
+        if (resultado == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(resultado);
     }
 }

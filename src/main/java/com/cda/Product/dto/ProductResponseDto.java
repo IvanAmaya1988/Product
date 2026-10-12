@@ -1,15 +1,18 @@
 package com.cda.Product.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.math.BigDecimal;
 
-public class ProductResponseDto {
+public record ProductResponseDto (
 
-    private Long id;
-    private String name;
-    private String description;
-    private BigDecimal price;
-    private Integer stock;
+    Long id,
+    String name,
+    String description,
+    BigDecimal price,
+    Integer stock){
 
+/*
     public ProductResponseDto() {
     }
 
@@ -52,4 +55,5 @@ public class ProductResponseDto {
     public void setStock(Integer stock) {
         this.stock = stock;
     }
+    */
 }

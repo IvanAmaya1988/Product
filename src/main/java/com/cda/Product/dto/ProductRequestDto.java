@@ -1,14 +1,21 @@
 package com.cda.Product.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.math.BigDecimal;
 
-public class ProductRequestDto {
+public record ProductRequestDto (
 
-    private String name;
-    private String description;
-    private BigDecimal price;
-    private Integer stock;
-
+        @NotBlank(message = "El nombre no puede estar vacío")
+        String name,
+        @NotNull
+        @Size(min=3,max=10)
+        String description,
+        BigDecimal price,
+        Integer stock){}
+/*
     public String getName() { return name;
     }
 
@@ -39,4 +46,4 @@ public class ProductRequestDto {
     public void setStock(Integer stock) {
         this.stock = stock;
     }
-}
+}*/

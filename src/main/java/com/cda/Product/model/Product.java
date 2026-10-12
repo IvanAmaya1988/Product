@@ -1,15 +1,25 @@
 package com.cda.Product.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 import java.math.BigDecimal;
 
+@Entity
+@Table(name="productos")
 public class Product {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name="nombre", nullable = false)
     private String name;
     private String description;
     private BigDecimal price;
     private Integer stock;
-
+/*
     public Product() {
     }
 
@@ -20,7 +30,7 @@ public class Product {
         this.price = price;
         this.stock = stock;
     }
-
+*/
     public Long getId() {
         return id;
     }

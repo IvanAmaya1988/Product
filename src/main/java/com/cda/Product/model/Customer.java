@@ -21,6 +21,8 @@ public class Customer {
     @Column(name = "phone", nullable = true)
     private String phone;
 
+
+    //    @OneToOne(fetch = FetchType.LAZY)
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="address_id")
     private Address adress;

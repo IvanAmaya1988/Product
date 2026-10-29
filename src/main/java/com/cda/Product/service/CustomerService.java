@@ -4,6 +4,7 @@ import com.cda.Product.dto.CustomerRequestDto;
 import com.cda.Product.dto.CustomerResponseDto;
 import com.cda.Product.model.Address;
 import com.cda.Product.model.Customer;
+import com.cda.Product.repository.AddressRepository;
 import com.cda.Product.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,14 @@ import java.util.List;
 @Service
 public class CustomerService{
     @Autowired
-    CustomerRepository repository;
+    CustomerRepository customerRepository;
+    //@Autowired
+    //AddressRepository addressRepository;
 
 
     public void createCustomer(CustomerRequestDto customerRequestDto) {
         Customer customer = createCustomerFromDto(customerRequestDto);
-        repository.save(customer);
+        customerRepository.save(customer);
     }
 
     private Customer createCustomerFromDto(CustomerRequestDto customerRequestDto) {
@@ -28,6 +31,7 @@ public class CustomerService{
         address.setStreet(customerRequestDto.getAddress().getStreet());
         address.setCity(customerRequestDto.getAddress().getCity());
         address.setZipCode(customerRequestDto.getAddress().getZipCode());
+        //address = addressRepository.save(address);
         customer.setAdress(address);
 
         return customer;

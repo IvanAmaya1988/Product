@@ -1,5 +1,6 @@
 package com.cda.Product.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -18,6 +19,10 @@ public class Address {
 
     @Column(nullable = false)
     private String zipCode;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "address")
+    private Customer customer;
 
     public Long getId() {
         return id;

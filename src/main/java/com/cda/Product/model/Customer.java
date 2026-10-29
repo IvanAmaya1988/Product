@@ -23,9 +23,9 @@ public class Customer {
 
 
     //    @OneToOne(fetch = FetchType.LAZY)
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="address_id")
-    private Address adress;
+    private Address address;
 
     public Customer() {
     }
@@ -66,10 +66,10 @@ public class Customer {
     public void setPhone(String phone) { this.phone = phone; }
 
     public Address getAdress() {
-        return adress;
+        return address;
     }
 
-    public void setAdress(Address adress) {
-        this.adress = adress;
+    public void setAdress(Address address) {
+        this.address = address;
     }
 }

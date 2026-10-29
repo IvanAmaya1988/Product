@@ -41,12 +41,11 @@ public class CustomerService{
     public Customer getCustomerById(Long id){
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
         Customer customer = optionalCustomer.get();
-        Address address = customer.getAdress();
+        //Address address = customer.getAdress();
         return customer;
     }
-/*      CustomerRepository repository;
 
-    public CustomerService(CustomerRepository repository) {
+/*    public CustomerService(CustomerRepository repository) {
         this.repository = repository;
     }
 

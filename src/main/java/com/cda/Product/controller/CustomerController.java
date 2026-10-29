@@ -24,6 +24,11 @@ public class CustomerController {
 
         return ResponseEntity.ok("Customer creado con exito");
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getCustomerByid(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(customerService.getCustomerById(id));
+    }
 /*    private final CustomerService customerService;
 
     public CustomerController(CustomerService customerService) {

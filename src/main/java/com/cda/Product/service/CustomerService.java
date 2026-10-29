@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerService{
@@ -34,6 +35,13 @@ public class CustomerService{
         //address = addressRepository.save(address);
         customer.setAdress(address);
 
+        return customer;
+    }
+
+    public Customer getCustomerById(Long id){
+        Optional<Customer> optionalCustomer = customerRepository.findById(id);
+        Customer customer = optionalCustomer.get();
+        Address address = customer.getAdress();
         return customer;
     }
 /*      CustomerRepository repository;

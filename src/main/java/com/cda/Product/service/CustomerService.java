@@ -2,17 +2,37 @@ package com.cda.Product.service;
 
 import com.cda.Product.dto.CustomerRequestDto;
 import com.cda.Product.dto.CustomerResponseDto;
+import com.cda.Product.model.Address;
 import com.cda.Product.model.Customer;
 import com.cda.Product.repository.CustomerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CustomerService implements CustomerServiceI{
+public class CustomerService{
+    @Autowired
+    CustomerRepository repository;
 
-       CustomerRepository repository;
+
+    public void createCustomer(CustomerRequestDto customerRequestDto) {
+        Customer customer = createCustomerFromDto(customerRequestDto);
+        repository.save(customer);
+    }
+
+    private Customer createCustomerFromDto(CustomerRequestDto customerRequestDto) {
+        Customer customer = new Customer(customerRequestDto.getFirstName(), customerRequestDto.getLastName(), customerRequestDto.getEmail(), customerRequestDto.getPhone());
+        Address address = new Address();
+        address.setStreet(customerRequestDto.getAddress().getStreet());
+        address.setCity(customerRequestDto.getAddress().getCity());
+        address.setZipCode(customerRequestDto.getAddress().getZipCode());
+        customer.setAdress(address);
+
+        return customer;
+    }
+/*      CustomerRepository repository;
 
     public CustomerService(CustomerRepository repository) {
         this.repository = repository;
@@ -52,4 +72,6 @@ public class CustomerService implements CustomerServiceI{
                 cliente.getPhone()
         );
     }
+
+ */
 }

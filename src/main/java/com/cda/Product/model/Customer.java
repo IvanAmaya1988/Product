@@ -21,6 +21,27 @@ public class Customer {
     @Column(name = "phone", nullable = true)
     private String phone;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name="address_id")
+    private Address adress;
+
+    public Customer() {
+    }
+
+    public Customer(Long id, String firstName, String lastName, String email, String phone) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+    }
+
+    public Customer(String firstName, String lastName, String email, String phone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+    }
 
     public Long getId() { return id; }
 
@@ -41,4 +62,12 @@ public class Customer {
     public String getPhone() { return phone; }
 
     public void setPhone(String phone) { this.phone = phone; }
+
+    public Address getAdress() {
+        return adress;
+    }
+
+    public void setAdress(Address adress) {
+        this.adress = adress;
+    }
 }

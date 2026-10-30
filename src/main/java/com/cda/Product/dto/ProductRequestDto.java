@@ -1,9 +1,7 @@
 package com.cda.Product.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 
@@ -11,10 +9,14 @@ public record ProductRequestDto (
 
         @NotBlank(message = "El nombre no puede estar vacío")
         String name,
-        @NotNull
-        @Size(min=3,max=10)
+        @NotBlank(message = "Descripción no puede estar vacía")
+        @Size(min=3,max=100, message = "Descripción debe ser entre 3 y 100 caracteres")
         String description,
+        @NotNull(message = "El precio no puede estar vacío")
+        @Positive(message = "El precio debe ser mayor a cero")
         BigDecimal price,
+        @NotNull(message = "El stock es obligatorio")
+        @PositiveOrZero(message = "El stock no puede ser negativo")
         Integer stock){}
 /*
     public String getName() { return name;

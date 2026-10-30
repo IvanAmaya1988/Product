@@ -3,6 +3,8 @@ package com.cda.Product.service;
 import com.cda.Product.dto.CartItemRequestDto;
 import com.cda.Product.dto.CartItemResponseDto;
 import com.cda.Product.dto.CartResponseDto;
+import com.cda.Product.exception.ConflictException;
+import com.cda.Product.exception.ResourceNotFoundException;
 import com.cda.Product.model.Cart;
 import com.cda.Product.model.Product;
 import com.cda.Product.model.ProductItem;
@@ -38,10 +40,17 @@ public class CartService implements CartServiceI{
     @Override
     public CartResponseDto addItemToCart(Long cartId, CartItemRequestDto requestDto) {
        Cart cart = cartRepository.findById(cartId)
-       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Carrito no encontrado"));
+               .orElseThrow(() -> new ResourceNotFoundException("Carrito no encontrado", 404));
+               //.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Carrito no encontrado")); cambio para manejo de errores
 
        Product product = productRepository.findById(requestDto.getProductId())
-       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado"));
+               .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado", 404));
+              //.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado")); cambio para manejo de errores
+
+        if (product.getStock() != null && product.getStock() < requestDto.getQuantity()) {
+            throw new ConflictException("Stock insuficiente para el producto");
+        }
+
 
        ProductItem item = new ProductItem(product, requestDto.getQuantity());
 
@@ -55,7 +64,8 @@ public class CartService implements CartServiceI{
     @Override
     public CartResponseDto getCartById(Long cartId) {
         Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Carrito no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Carrito con ID encontrado", 404));
+                //.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Carrito no encontrado")); cambio manejo de errores
         return mapToDto(cart);
     }
 

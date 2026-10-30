@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/products")
@@ -38,11 +40,21 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponseDto> getById(@PathVariable Long id) {
+    public ResponseEntity<?> getById(@PathVariable Long id) {
         ProductResponseDto resultado = productService.getById(id);
+
+        /*ProductResponseDto resultado= null;   *** se anula con el manejo de Excepciones
+        try {
+            resultado = productService.getById(id);
+        }catch(NoSuchElementException e){
+            return ResponseEntity.ok("No se encuentra el producto");
+
+        }finally {
+            System.out.println("ESTA LINEA SE EJECUTA SIEMPRE");
+        }
         if (resultado == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        }*/
         return ResponseEntity.ok(resultado);
     }
 /*

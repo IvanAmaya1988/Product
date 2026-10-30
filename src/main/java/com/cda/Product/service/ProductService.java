@@ -2,12 +2,15 @@ package com.cda.Product.service;
 
 import com.cda.Product.dto.ProductRequestDto;
 import com.cda.Product.dto.ProductResponseDto;
+import com.cda.Product.exception.ResourceNotFoundException;
 import com.cda.Product.model.Product;
 import com.cda.Product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class ProductService implements ProductServiceI {
@@ -32,10 +35,18 @@ public class ProductService implements ProductServiceI {
         }
 
         public ProductResponseDto getById(Long id) {
-            if(id==null){
-                //throw new ProductIdNullException("el id no puede ser null");
+            Optional<Product> productoObtenido  = repository.findById(id);
+            ProductResponseDto result;
+
+            try {
+                 result = getProductoDto(productoObtenido.get());
             }
-           return getProductoDto(repository.findById(id).get());
+            catch (NoSuchElementException e){
+                String message = "Producto no encontrado, id: " + id;
+                throw new ResourceNotFoundException(message,404);
+            }
+
+            return result;
     }
 
 

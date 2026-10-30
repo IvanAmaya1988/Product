@@ -24,8 +24,9 @@ public class ErrorHandler {
 
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ApiErrorResponse> handleConflict(ConflictException e, HttpServletRequest request) {
-        ApiErrorResponse body = new ApiErrorResponse(HttpStatus.CONFLICT.value(), LocalDateTime.now(), "Conflict", e.getMessage(), request.getRequestURI());
-        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+        ApiErrorResponse body = new ApiErrorResponse(409, LocalDateTime.now(), e.toString(), e.getMessage(), request.getRequestURI());
+        ResponseEntity<ApiErrorResponse> response = new ResponseEntity<>(body, HttpStatus.CONFLICT);
+        return response;
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

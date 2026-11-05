@@ -15,6 +15,8 @@ public record ProductRequestDto (
         @NotNull(message = "El precio no puede estar vacío")
         @Positive(message = "El precio debe ser mayor a cero")
         BigDecimal price,
+        @NotNull(message = "Categoria no puede estar vacío")
+        String category,
         @NotNull(message = "El stock es obligatorio")
         @PositiveOrZero(message = "El stock no puede ser negativo")
         Integer stock){}

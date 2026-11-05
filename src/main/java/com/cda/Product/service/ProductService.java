@@ -7,6 +7,7 @@ import com.cda.Product.model.Product;
 import com.cda.Product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -75,14 +76,52 @@ public class ProductService implements ProductServiceI {
         product.setName(dto.name());
         product.setDescription(dto.description());
         product.setPrice(dto.price());
+        product.setCategory(dto.category());
         product.setStock(dto.stock());
         //products.add(product);
         //nextId++;
         return getProductoDto(repository.save(product));
     }
 
+    public  List<ProductResponseDto> getByName(String name, String category){
+        List<ProductResponseDto> result = new ArrayList<>();
+        //Visto en clase
+        //repository.findByNameContainingIgnoreCaseAndCategory(name, category).forEach(p -> result.add(getProductoDto(p)));
+        //repository.findProductsConJPQL(name, category).forEach(p -> result.add(getProductoDto(p)));
+        repository.findProductsConSQL(name, category).forEach(p -> result.add(getProductoDto(p)));
+        return result;
+    }
+
+    public List<ProductResponseDto> searchByName(String name) {
+        List<ProductResponseDto> result = new ArrayList<>();
+        repository.findByNameContainingIgnoreCase(name).forEach(p -> result.add(getProductoDto(p)));
+        return result;
+    }
+
+    public List<ProductResponseDto> findByCategory(String category) {
+        List<ProductResponseDto> result = new ArrayList<>();
+        repository.findByCategory(category).forEach(p -> result.add(getProductoDto(p)));
+        return result;
+    }
+
+    public List<ProductResponseDto> findByPriceRange(BigDecimal min, BigDecimal max) {
+        List<ProductResponseDto> result = new ArrayList<>();
+        repository.findByPriceBetween(min, max).forEach(p -> result.add(getProductoDto(p)));
+        return result;
+    }
+
+    public List<ProductResponseDto> getTopByCategory(String category) {
+        List<ProductResponseDto> result = new ArrayList<>();
+        repository.findByCategoryOrderByPriceDesc(category).forEach(p -> result.add(getProductoDto(p)));
+        return result;
+    }
+
+    public Long countByCategory(String category) {
+        return repository.countByCategory(category);
+    }
+
     private ProductResponseDto getProductoDto(Product producto) {
-        return new ProductResponseDto(producto.getId(), producto.getName(), producto.getDescription(), producto.getPrice(), producto.getStock());
+        return new ProductResponseDto(producto.getId(), producto.getName(), producto.getDescription(), producto.getPrice(), producto.getCategory(), producto.getStock());
     }
 /*
     public List<ProductResponseDto> getAll() {

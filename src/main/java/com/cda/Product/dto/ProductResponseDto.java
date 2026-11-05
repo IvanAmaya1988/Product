@@ -10,6 +10,7 @@ public record ProductResponseDto (
     String name,
     String description,
     BigDecimal price,
+    String category,
     Integer stock){
 
 /*
